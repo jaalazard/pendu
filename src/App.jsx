@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  let wordToGuess = "zoro";
+
+  const [blanks, setBlanks] = useState("_".repeat(wordToGuess.length));
+  const [count, setCount] = useState(11);
+  const [userLetter, setUserLetter] = useState();
+
+  const checking = (wordToGuess, userLetter) => {
+    if (wordToGuess.includes(userLetter)) {
+      for (let i = 0; i < wordToGuess.length; i++) {
+        if (wordToGuess[i] === userLetter) {
+          setBlanks(blanks.replace(blanks[i], userLetter));
+        }
+      }
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userInput = document.querySelector("#userInput");
+    setUserLetter(userInput.value);
+    checking(wordToGuess, userLetter);
+    if (blanks === wordToGuess) {
+      alert("Gagné!");
+    }
+    setCount(count - 1);
+    if (count <= 0) {
+      alert("Perdu !");
+    }
+    userInput.value="";
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="userInput">Entrez une lettre : </label>
+        <input id="userInput"></input>
+        <button>Valider</button>
+      </form>
+      <p>{blanks}</p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
