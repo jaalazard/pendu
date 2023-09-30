@@ -36,18 +36,19 @@ function App() {
     e.preventDefault();
     setCount(count-1);
     checking(wordToGuess, userLetter);
-    if (guessedWord === wordToGuess) {
-      alert("Gagné!");
-    }const input = document.querySelector('input');
+    const input = document.querySelector('input');
     input.value='';
+    if (guessedWord === wordToGuess) {
+      alert("Gagné!"); }
   };
 
   return (
     <div id="container">
       <div id="tries">
-    {count > 0 ?
-    <p>Essais restants : {count}</p>
-    : <p>Perdu !</p>}
+      {guessedWord === wordToGuess ? <p> Gagné !</p> :
+      guessedWord !== wordToGuess && count > 0? 
+      <p>Essais restants : {count}</p> : 
+      <p>Perdu !</p> }
     </div>
     <div id="form">
       <form onSubmit={handleSubmit}>
